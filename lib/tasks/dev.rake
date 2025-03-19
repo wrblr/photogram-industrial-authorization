@@ -60,9 +60,19 @@ task sample_data: :environment do
 
   users.each do |user|
     3.times do |i|
+
+      # This allows the image to display whether in a codespace, deployed, or local environment
+      image_url = if ENV.fetch("CODESPACES_NAME", nil).present?
+        "https://#{ENV.fetch("CODESPACES_NAME")}-3000.app.github.dev/#{rand(1..10)}.jpeg"
+      elsif ENV.fetch("APPLICATION_HOST", nil).present?
+        "https://#{ENV.fetch("APPLICATION_HOST")}/#{rand(1..10)}.jpeg"
+      else
+        "http://localhost:3000/#{rand(1..10)}.jpeg"
+      end
+
       photo = user.own_photos.create(
         caption: "Sample photo #{i + 1} by #{user.name}",
-        image: "https://#{ENV.fetch("APPLICATION_HOST", "localhost:3000")}/#{rand(1..10)}.jpeg"
+        image: image_url
       )
 
       user.followers.each do |follower|
