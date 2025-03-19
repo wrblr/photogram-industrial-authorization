@@ -60,7 +60,6 @@ task sample_data: :environment do
 
   users.each do |user|
     3.times do |i|
-
       # This allows the image to display whether in a codespace, deployed, or local environment
       image_url = if ENV.fetch("CODESPACES_NAME", nil).present?
         "https://#{ENV.fetch("CODESPACES_NAME")}-3000.app.github.dev/#{rand(1..10)}.jpeg"
