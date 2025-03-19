@@ -57,7 +57,6 @@ group :development do
 end
 
 # Additional gems for AppDev 2
-gem "devise"
 gem "active_link_to"
 gem "awesome_print"
 gem "dotenv"
@@ -66,9 +65,7 @@ gem "htmlbeautifier"
 gem "http"
 gem "table_print"
 gem "simple_form"
-gem "ransack"
-gem "strip_attributes"
-gem "validate_url"
+gem "devise"
 
 group :development do
   gem "annotaterb"
