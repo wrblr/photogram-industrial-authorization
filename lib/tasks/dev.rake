@@ -31,7 +31,7 @@ task sample_data: :environment do
       name: "#{person[:first_name]} #{person[:last_name]}",
       bio: "#{person[:first_name]} is a sample user.",
       website: "https://#{username}.example.com",
-      private: person[:first_name].in?(["Bob", "Carol", "Eve", "Ivy"]),
+      private: person[:first_name].in?([ "Bob", "Carol", "Eve", "Ivy" ]),
       avatar_image: "https://robohash.org/#{username}"
     )
   end
@@ -42,14 +42,14 @@ task sample_data: :environment do
     users.each do |second_user|
       next if first_user == second_user
 
-      if first_user.username.in?(["alice", "bob", "carol", "dave"])
+      if first_user.username.in?([ "alice", "bob", "carol", "dave" ])
         first_user.sent_follow_requests.create(
           recipient: second_user,
           status: "accepted"
         )
       end
 
-      if second_user.username.in?(["eve", "frank", "grace"])
+      if second_user.username.in?([ "eve", "frank", "grace" ])
         second_user.sent_follow_requests.create(
           recipient: first_user,
           status: "pending"
@@ -66,11 +66,11 @@ task sample_data: :environment do
       )
 
       user.followers.each do |follower|
-        if follower.username.in?(["alice", "bob", "eve", "frank"])
+        if follower.username.in?([ "alice", "bob", "eve", "frank" ])
           photo.fans << follower
         end
 
-        if follower.username.in?(["carol", "dave", "grace"])
+        if follower.username.in?([ "carol", "dave", "grace" ])
           photo.comments.create(
             body: "Great photo, #{user.name}! ##{i + 1}",
             author: follower
