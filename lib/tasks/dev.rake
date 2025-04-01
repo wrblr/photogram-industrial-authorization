@@ -5,11 +5,11 @@ task sample_data: :environment do
   # Clean up existing uploaded files
   FileUtils.rm_rf(Rails.root.join("public", "uploads"))
 
-  FollowRequest.delete_all
-  Comment.delete_all
-  Like.delete_all
-  Photo.delete_all
-  User.delete_all
+  FollowRequest.destroy_all
+  Comment.destroy_all
+  Like.destroy_all
+  Photo.destroy_all
+  User.destroy_all
 
   people = [
     { first_name: "Alice", last_name: "Smith" },
