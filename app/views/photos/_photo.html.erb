@@ -5,7 +5,7 @@
         <h2 class="h5 m-0 p-0 d-flex align-items-center">
           <%= image_tag photo.owner.avatar_image_url, class: "rounded-circle me-2 img-cover img-small" %>
 
-          <%= link_to photo.owner.username, user_path(photo.owner.username), class: "text-dark link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover", data: { turbo: false } %>
+          <%= link_to photo.owner.username, user_path(photo.owner.username), class: "text-dark link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover" %>
         </h2>
 
         <div>
