@@ -1,15 +1,6 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: %i[ show edit update destroy ]
-  before_action :is_an_authorized_user, only: [:destroy, :create]
-
-  # GET /comments or /comments.json
-  def index
-    @comments = Comment.all
-  end
-
-  # GET /comments/1 or /comments/1.json
-  def show
-  end
+  before_action :set_comment, only: %i[ edit update destroy ]
+  before_action :ensure_current_user_is_owner, only: %i[ edit update destroy ]
 
   # GET /comments/new
   def new
@@ -27,8 +18,9 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.save
-        format.html { redirect_back fallback_location: root_path, notice: "Comment was successfully created." }
-        format.json { render :show, status: :created, location: @comment }
+        #format.html { redirect_back fallback_location: root_path, notice: "Comment was successfully created." }
+        #format.json { render :show, status: :created, location: @comment }
+        format.js
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
@@ -55,25 +47,25 @@ class CommentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_back fallback_location: root_url, notice: "Comment was successfully destroyed." }
       format.json { head :no_content }
+      format.js { render template: "comments/destroy" }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_comment
-      @comment = Comment.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def comment_params
-      params.require(:comment).permit(:author_id, :photo_id, :body)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
 
-    # Determine if the current user is authorized to carry out an action.
-    def is_an_authorized_user
-      @photo = Photo.find(params.fetch(:comment).fetch(:photo_id))
-      if current_user != @photo.owner && @photo.owner.private? && !current_user.leaders.include?(@photo.owner)
-        redirect_back fallback_location: root_url, alert: "Not authorized"
-      end
+  def ensure_current_user_is_owner
+    if current_user != @comment.author
+      redirect_back fallback_location: root_url, alert: "You're not authorized for that."
     end
+  end
+
+  # Only allow a list of trusted parameters through.
+  def comment_params
+    params.require(:comment).permit(:author_id, :photo_id, :body)
+  end
 end

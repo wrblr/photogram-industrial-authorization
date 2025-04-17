@@ -9,7 +9,7 @@
         </h2>
 
         <div>
-          <% if current_user == photo.owner %>
+          <% if photo.owner == current_user %>
             <%= link_to edit_photo_path(photo), class: "btn btn-link btn-sm text-muted" do %>
               <i class="fas fa-edit fa-fw"></i>
             <% end %>
@@ -26,19 +26,23 @@
       <div class="card-body">
         <div class="mb-3 d-flex justify-content-between">
           <%= render "photos/likes", photo: photo %>
+
+          <%= render "follow_requests/follow_unfollow", sender: current_user, recipient: photo.owner %>
         </div>
         <p class="card-text"><%= photo.caption %></p>
       </div>
 
-      <ul class="list-group list-group-flush">
-        <% photo.comments.default_order.each do |comment| %>
-          <%= render "comments/comment", comment: comment %>
-        <% end %>
-        
-        <div class="card-body">
-          <%= render "comments/form", comment: photo.comments.build %>
-        </div>
-      </ul>
+      <% if policy(photo).show? %>
+        <ul class="list-group list-group-flush">
+          <% photo.comments.default_order.each do |comment| %>
+            <%= render "comments/comment", comment: comment %>
+          <% end %>
+
+          <div class="card-body">
+            <%= render "comments/form", comment: photo.comments.build %>
+          </div>
+        </ul>
+      <% end %>
     </div>
   </div>
 </div>
